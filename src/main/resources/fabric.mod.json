@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "id": "dataexport",
+  "version": "${version}",
+  "name": "Data Export",
+  "description": "",
+  "authors": [
+    "Gaming32"
+  ],
+  "contact": {},
+  "license": "MIT",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "io.github.gaming32.dataexport.DataExportMod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.19.2"
+  }
+}

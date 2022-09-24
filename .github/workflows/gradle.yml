@@ -22,6 +22,7 @@ jobs:
         run: |
           mkdir run
           echo eula=true > run/eula.txt
+          echo level-type=flat > run/server.properties
           echo -e 'dataexport all\nstop' | ./gradlew runServer
       - name: Upload data artifacts
         uses: actions/upload-artifact@v2.3.1

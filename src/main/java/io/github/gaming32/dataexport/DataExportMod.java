@@ -36,10 +36,16 @@ public class DataExportMod implements ModInitializer {
                 })
                 .then(LiteralArgumentBuilder.<ServerCommandSource>literal("all")
                     .executes(ctx -> {
+                        final long startTime = System.nanoTime();
                         int result = 0;
                         for (String export : EXPORTS.keySet()) {
                             result += export(export, ctx);
                         }
+                        final long endTime = System.nanoTime();
+                        ctx.getSource().sendFeedback(
+                            Text.literal("Ran all exports in " + (endTime - startTime) / 1e6 + "ms"),
+                            true
+                        );
                         return result;
                     })
                 )

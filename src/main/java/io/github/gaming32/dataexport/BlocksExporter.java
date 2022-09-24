@@ -21,7 +21,7 @@ public final class BlocksExporter implements DataExporter {
             output.beginObject();
             output.name("soundGroup").value(soundGroups.get(block.getSoundGroup(block.getDefaultState())));
             output.name("mapColor").value(block.getDefaultMapColor().id);
-            output.name("resistance").value(block.getBlastResistance());
+            output.name("blastResistance").value(block.getBlastResistance());
             output.name("hardness").value(block.getHardness());
             output.endObject();
         }

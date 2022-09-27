@@ -5,6 +5,7 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import io.github.gaming32.dataexport.exporters.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,6 +21,7 @@ public class DataExportMod implements ModInitializer {
         "blocks", new BlocksExporter(),
         "blockSoundGroups", new BlockSoundGroupsExporter(),
         "items", new ItemsExporter(),
+        "materials", new MaterialsExporter(),
         "soundEvents", new SoundEventsExporter()
     );
 

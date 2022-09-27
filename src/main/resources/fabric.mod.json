@@ -15,6 +15,9 @@
       "io.github.gaming32.dataexport.DataExportMod"
     ]
   },
+  "mixins": [
+    "dataexport.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.14.9",
     "fabric": "*",

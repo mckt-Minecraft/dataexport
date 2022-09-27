@@ -1,6 +1,7 @@
-package io.github.gaming32.dataexport;
+package io.github.gaming32.dataexport.exporters;
 
 import com.google.gson.stream.JsonWriter;
+import io.github.gaming32.dataexport.DataExporter;
 import net.minecraft.item.Item;
 import net.minecraft.util.registry.Registry;
 

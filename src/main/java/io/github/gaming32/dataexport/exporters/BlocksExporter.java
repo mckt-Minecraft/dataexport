@@ -5,10 +5,7 @@ import io.github.gaming32.dataexport.DataExporter;
 import io.github.gaming32.dataexport.ExportUtil;
 import io.github.gaming32.dataexport.mixin.AbstractBlockAccessor;
 import io.github.gaming32.dataexport.mixin.StairsBlockAccessor;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Material;
-import net.minecraft.block.StairsBlock;
+import net.minecraft.block.*;
 import net.minecraft.sound.BlockSoundGroup;
 import net.minecraft.state.property.Property;
 import net.minecraft.util.registry.Registry;
@@ -31,7 +28,17 @@ public final class BlocksExporter implements DataExporter {
             output.name("hardness").value(block.getHardness());
             output.name("typeProperties").beginObject();
             output.name("type");
-            if (block instanceof StairsBlock stairsBlock) {
+            if (block instanceof PillarBlock) {
+                output.value("pillar");
+            } else if (block instanceof SaplingBlock) {
+                output.value("sapling");
+            } else if (block instanceof PaneBlock) {
+                output.value("pane");
+            } else if (block instanceof DoorBlock) {
+                output.value("door");
+            } else if (block instanceof SlabBlock) {
+                output.value("slab");
+            } else if (block instanceof StairsBlock stairsBlock) {
                 output.value("stairs");
                 output.name("baseBlockState").value(
                     blockStateToString(((StairsBlockAccessor)stairsBlock).getBaseBlockState())

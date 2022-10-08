@@ -73,7 +73,7 @@ public class DataExportMod implements ModInitializer {
     private int export(String export, CommandContext<ServerCommandSource> ctx) {
         final DataExporter exporter = EXPORTS.get(export);
         if (exporter == null) {
-            ctx.getSource().sendError(Text.literal("Unknown export " + export));
+            ctx.getSource().sendError(Text.literal("Unknown exporter " + export));
             return 1;
         }
         ctx.getSource().sendFeedback(Text.literal("Exporting " + export + "..."), true);

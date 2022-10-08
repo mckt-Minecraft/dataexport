@@ -5,18 +5,22 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.logging.LogUtils;
 import io.github.gaming32.dataexport.exporters.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import org.slf4j.Logger;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.util.Map;
 
 public class DataExportMod implements ModInitializer {
+    public static final Logger LOGGER = LogUtils.getLogger();
+
     private static final Map<String, DataExporter> EXPORTS = Map.of(
         "blocks", new BlocksExporter(),
         "blockSoundGroups", new BlockSoundGroupsExporter(),
@@ -96,9 +100,10 @@ public class DataExportMod implements ModInitializer {
             return 0;
         } else {
             ctx.getSource().sendError(
-                Text.literal("Failed to export " + export + " in " + (endTime - startTime) / 1e6 + "ms")
+                Text.literal("Failed to export " + export + " in " + (endTime - startTime) / 1e6 + "ms: ")
                     .append(Text.literal(exception.toString()).styled(style -> style.withColor(Formatting.RED)))
             );
+            LOGGER.error("Export failed", exception);
             return 1;
         }
     }

@@ -1,42 +1,21 @@
 package io.github.gaming32.dataexport.exporters;
 
 import com.google.gson.stream.JsonWriter;
-import io.github.gaming32.dataexport.DataExportMod;
 import io.github.gaming32.dataexport.DataExporter;
 import io.github.gaming32.dataexport.ExportUtil;
 import io.github.gaming32.dataexport.mixin.AbstractBlockAccessor;
-import net.fabricmc.loader.api.FabricLoader;
-import net.fabricmc.loader.api.MappingResolver;
+import io.github.gaming32.dataexport.mixin.StairsBlockAccessor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
 import net.minecraft.block.StairsBlock;
 import net.minecraft.sound.BlockSoundGroup;
+import net.minecraft.state.property.Property;
 import net.minecraft.util.registry.Registry;
 
-import java.lang.reflect.Field;
+import java.util.stream.Collectors;
 
 public final class BlocksExporter implements DataExporter {
-    private static final Field STAIRS_BASE_BLOCK_STATE;
-
-    static {
-        final MappingResolver resolver = FabricLoader.getInstance().getMappingResolver();
-        Field stairsBaseBlockState;
-        try {
-            stairsBaseBlockState = StairsBlock.class.getDeclaredField(resolver.mapFieldName(
-                "intermediary",
-                resolver.mapClassName("intermediary", "net.minecraft.class_2510"),
-                "field_11574",
-                "L" + BlockState.class.getName().replace('.', '/') + ";"
-            ));
-            stairsBaseBlockState.setAccessible(true);
-        } catch (Exception e) {
-            stairsBaseBlockState = null;
-            DataExportMod.LOGGER.warn("Failed to get field StairsBlock.baseBlockState", e);
-        }
-        STAIRS_BASE_BLOCK_STATE = stairsBaseBlockState;
-    }
-
     @Override
     public void export(final JsonWriter output) throws Exception {
         final var soundGroups = ExportUtil.collectConstantsToMap(BlockSoundGroup.class);
@@ -54,12 +33,9 @@ public final class BlocksExporter implements DataExporter {
             output.name("type");
             if (block instanceof StairsBlock stairsBlock) {
                 output.value("stairs");
-                output.name("baseBlockState");
-                if (STAIRS_BASE_BLOCK_STATE != null) {
-                    output.value(STAIRS_BASE_BLOCK_STATE.get(stairsBlock).toString());
-                } else {
-                    output.value("minecraft:stone");
-                }
+                output.name("baseBlockState").value(
+                    blockStateToString(((StairsBlockAccessor)stairsBlock).getBaseBlockState())
+                );
             } else {
                 output.value("block");
             }
@@ -67,5 +43,22 @@ public final class BlocksExporter implements DataExporter {
             output.endObject();
         }
         output.endObject();
+    }
+
+    private static String blockStateToString(BlockState state) {
+        final StringBuilder result = new StringBuilder(Registry.BLOCK.getId(state.getBlock()).toString());
+        if (!state.getEntries().isEmpty()) {
+            result.append('[');
+            result.append(state.getEntries().entrySet().stream().map(entry ->
+                entry.getKey().getName() + '=' + nameValue(entry.getKey(), entry.getValue())
+            ).collect(Collectors.joining(",")));
+            result.append(']');
+        }
+        return result.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends Comparable<T>> String nameValue(Property<T> property, Object value) {
+        return property.name((T)value); // aaaaaaaaaa
     }
 }

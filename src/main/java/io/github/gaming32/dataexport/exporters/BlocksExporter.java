@@ -43,6 +43,8 @@ public final class BlocksExporter implements DataExporter {
                 output.name("baseBlockState").value(
                     blockStateToString(((StairsBlockAccessor)stairsBlock).getBaseBlockState())
                 );
+            } else if (block instanceof TrapdoorBlock) {
+                output.value("trapdoor");
             } else {
                 output.value("block");
             }

@@ -22,6 +22,7 @@ public class DataExportMod implements ModInitializer {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     private static final Map<String, DataExporter> EXPORTS = Map.of(
+        "blockEntityTypes", new BlockEntityTypesExporter(),
         "blocks", new BlocksExporter(),
         "blockSoundGroups", new BlockSoundGroupsExporter(),
         "items", new ItemsExporter(),

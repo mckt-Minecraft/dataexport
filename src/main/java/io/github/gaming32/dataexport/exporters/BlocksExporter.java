@@ -45,6 +45,9 @@ public final class BlocksExporter implements DataExporter {
                 );
             } else if (block instanceof TrapdoorBlock) {
                 output.value("trapdoor");
+            } else if (block instanceof AbstractSignBlock signBlock) {
+                output.value(block instanceof WallSignBlock ? "wall_sign" : "sign");
+                output.name("signType").value(signBlock.getSignType().getName());
             } else {
                 output.value("block");
             }
